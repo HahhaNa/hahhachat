@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { auth } from "../config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import Modal from 'react-modal'; // Import Modal component
 
@@ -22,13 +22,13 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false); // State for modal
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // Redirect to desired page upon successful login
-      // For example: history.push('/dashboard');
+      navigate("/");
     } catch (error) {
       setError(error.message);
       openModal(); // Open modal on error
@@ -39,8 +39,7 @@ const Login = () => {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      // Redirect to desired page upon successful login
-      // For example: history.push('/dashboard');
+      navigate("/");
     } catch (error) {
       setError(error.message);
       openModal(); // Open modal on error
@@ -61,11 +60,12 @@ const Login = () => {
         <span className="logo">Hahha Chat</span>
         <span className="title">Login</span>
         <form onSubmit={handleLogin}>
-          <input
+        <input
             type="email"
             placeholder="Your Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="username"
           />
           <input
             type="password"

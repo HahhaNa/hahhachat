@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from "firebase/auth";
-import { auth } from "../config";
+import { auth, database, storage } from "../config";
 import { Link, useNavigate } from "react-router-dom";
-// import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import Modal from 'react-modal';
 
 const provider = new GoogleAuthProvider();
+
 
 
 const customStyles = {
@@ -29,6 +30,7 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -36,18 +38,18 @@ const Register = () => {
         password
       );
       await updateProfile(userCredential.user, {
-        displayName: displayName,
+        displayName,
       });
+      // user on Realtime Database
+      await database.ref('users/' + userCredential.user.uid).set({
+        uid: userCredential.user.uid,
+        displayName,
+        email
+      });
+      await database.ref('userChats/' + userCredential.user.uid).set({});
+      
+      navigate("/");
 
-    //   // for firestore
-    //   await setDoc(doc(db, "users", userCredential.user.uid), {
-    //     uid: userCredential.user.uid,
-    //     displayName,
-    //     email,
-    //   });
-    //   console.log("User registered successfully:", userCredential.user);
-    //   await setDoc(doc(db, "userChats", userCredential.user.uid), {});
-    //   navigate("/chat");
     } catch (error) {
       setError(error.message);
       openModal();
@@ -57,18 +59,20 @@ const Register = () => {
   const handleGoogleRegister = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      // Update user's displayName if available
-      if (result.additionalUserInfo.isNewUser && displayName) {
+      // Check if additionalUserInfo exists and isNewUser is true
+      if (result.additionalUserInfo && result.additionalUserInfo.isNewUser && displayName) {
         await result.user.updateProfile({
           displayName: displayName
         });
       }
       console.log("User registered with Google:", result.user);
+      navigate("/");
     } catch (error) {
       setError(error.message);
       openModal();
     }
   };
+  
 
   const openModal = () => {
     setIsOpen(true);
