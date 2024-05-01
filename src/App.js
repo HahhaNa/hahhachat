@@ -9,10 +9,8 @@ import { useContext } from "react";
 import React, { useState, useEffect } from 'react';
 import AppContext from './AppContext';
 
-
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, currentUser }) => {
   const navigate = useNavigate();
-  const currentUser = useContext(AppContext).currentUser;
 
   useEffect(() => {
     if (!currentUser) {
@@ -24,12 +22,21 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+  
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
     });
+
+    // Call getCurrentUser
+    const getCurrentUser = () => {
+      const user = auth.currentUser;
+      setCurrentUser(user);
+    };
+
+    getCurrentUser(); // Call once when component mounts
 
     return () => unsubscribe();
   }, []);
@@ -40,13 +47,13 @@ function App() {
         <Routes>
           <Route path="/">
              <Route
-            index
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+              index
+              element={
+                <ProtectedRoute currentUser={currentUser}>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>

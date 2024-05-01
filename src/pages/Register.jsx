@@ -4,6 +4,8 @@ import { auth, database, storage } from "../config";
 import { Link, useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
 import Modal from 'react-modal';
+import { ref, push, set } from "firebase/database";
+
 
 const provider = new GoogleAuthProvider();
 
@@ -40,14 +42,14 @@ const Register = () => {
       await updateProfile(userCredential.user, {
         displayName,
       });
+
       // user on Realtime Database
-      await database.ref('users/' + userCredential.user.uid).set({
+      await set(ref(database, 'users/' + userCredential.user.uid), {
         uid: userCredential.user.uid,
         displayName,
         email
       });
-      await database.ref('userChats/' + userCredential.user.uid).set({});
-      
+
       navigate("/");
 
     } catch (error) {
@@ -65,6 +67,14 @@ const Register = () => {
           displayName: displayName
         });
       }
+
+      // user on Realtime Database
+      await set(ref(database, 'users/' + result.user.uid),{
+        uid: result.user.uid,
+        displayName,
+        email
+      });
+      
       console.log("User registered with Google:", result.user);
       navigate("/");
     } catch (error) {

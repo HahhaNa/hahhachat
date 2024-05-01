@@ -18,6 +18,8 @@
 .home .container .chat {
     flex: 2;
     background-color: #eee; 
+    display: flex;
+    flex-direction: column; 
 }
 
 .home .container .sidebar {
@@ -74,3 +76,128 @@
 .search input::placeholder {
     color:#e7d9fa;
 }
+
+.search input{
+    background-color: transparent;
+    border: 0.5px slateblue;
+    color: white;
+}
+
+
+/* Chat.jsx styling */
+/* Chat containers */
+.message {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  /* Darker chat message */
+  .darker {
+    border-color: #ccc;
+    background-color: #ddd;
+  }
+  
+  /* Clear floats */
+  .message::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  /* Style images */
+  .message img {
+    float: left;
+    max-width: 60px;
+    width: 100%;
+    margin-right: 20px;
+    border-radius: 50%;
+  }
+  
+  /* Style the right image */
+  .message img.right {
+    float: right;
+    margin-left: 20px;
+    margin-right:0;
+  }
+  
+  /* Style time text */
+  .time-right {
+    float: right;
+    color: #aaa;
+  }
+  
+  /* Style time text */
+  .time-left {
+    float: left;
+    color: #999;
+  }
+
+  /* UserInput.jsx */
+  .chat .user-input {
+    height: auto;
+    background-color:#8893de;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 2px solid whitesmoke;
+  }
+  
+  .chat .user-input input {
+    flex: 1;
+    width: auto;
+    height: 25px;
+    border: none;
+    outline: none;
+    color: #2f2d52;
+    font-size: 18px;
+    margin: 10px;
+  }
+  
+  .chat .user-input input::placeholder {
+    color: lightgray;
+  }
+  
+  .chat .user-input .send {
+    display: flex;
+    flex-direction: row;
+    padding-left: 10px; 
+  }
+  
+  .chat .user-input .send img {
+    height: 20px; /* Adjust height */
+    width: 20px; /* Adjust width */
+    cursor: pointer;
+  }
+  
+  .chat .user-input .send button {
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    background-color: #362a6a;
+    cursor: pointer;
+    border-radius: 10%;
+  }
+
+
+  .message-list-container {
+    max-height: calc(100% - 70px);
+    overflow-y: auto; /* Add vertical scroll if content overflows */
+    flex: 1;
+  }
+ 
+  
+  /* Additional styles for scrollbar if needed */
+  .message-list::-webkit-scrollbar {
+    width: 10px; /* Adjust as needed */
+  }
+  
+  .message-list::-webkit-scrollbar-thumb {
+    background-color: #888; /* Adjust as needed */
+  }
+  
+  
