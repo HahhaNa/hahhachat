@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from './NavBar';
-import Search from './Search';
 import { database } from "../config";
 import { ref, onValue, off, push, set, get } from 'firebase/database';
 
-const SideBar = ({ currentUser, onRoomChange }) => {
+const SideBar = ({ currentUser, onRoomChange, collapsed }) => {
   const [rooms, setRooms] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
-
-  const handleRoomClick = (room) => {
-    setSelectedRoom(room); 
-    onRoomChange(room);
-  };
 
   useEffect(() => {
     const roomsRef = ref(database, 'rooms');
@@ -26,7 +20,6 @@ const SideBar = ({ currentUser, onRoomChange }) => {
           if (room.userEmail) {
             let emailExists = false;
             if (Array.isArray(room.userEmail)) {
-              // If userEmail is an array, check if currentUser.email exists in it
               for (const email of room.userEmail) {
                 if (email === currentUser.email) {
                   emailExists = true;
@@ -34,7 +27,6 @@ const SideBar = ({ currentUser, onRoomChange }) => {
                 } 
               }
             } else {
-              // If userEmail is not an array, directly compare with currentUser.email
               emailExists = room.userEmail === currentUser.email;
             }
             
@@ -74,7 +66,6 @@ const SideBar = ({ currentUser, onRoomChange }) => {
         }
 
         if (roomToUpdate) {
-          // Update the room in the database with the new userEmail array
           const updatedUserEmails = Array.isArray(roomToUpdate.userEmail) ? [...roomToUpdate.userEmail, otherUserEmail] : [roomToUpdate.userEmail, otherUserEmail];
           await set(ref(database, `rooms/${roomToUpdate.roomId}/userEmail`), updatedUserEmails);
           console.log('Successfully subscribed', otherUserEmail, 'to room:', roomName);
@@ -91,33 +82,35 @@ const SideBar = ({ currentUser, onRoomChange }) => {
   const handleNewRoom = () => {
     const newRoomName = prompt('Enter the new room name:');
     if (newRoomName) {
-      // Write the new room data to the database
       const newRoomRef = push(ref(database, `rooms`));
       set(newRoomRef, {
-        roomId: newRoomRef.key, // Assign a unique ID for the room
+        roomId: newRoomRef.key,
         roomName: newRoomName,
         userId: currentUser.uid,
-        userEmail: currentUser.email, // Store userEmail without nesting
+        userEmail: currentUser.email,
         messages: [],
       });
 
-      // Update state with the new room
       setRooms([...rooms, newRoomName]);
 
       console.log('New room created:', newRoomName);
     }
   };
 
-  return (
-    <div className="sidebar">
-      <NavBar />
+  const handleRoomClick = (room) => {
+    setSelectedRoom(room);
+    onRoomChange(room);
+  };
 
+  const sidebarClass = collapsed ? 'sidebar collapsed' : 'sidebar';
+
+  return (
+    <div className={sidebarClass}>
+      <NavBar currentUser={currentUser}/>
       <div className='room-buttons'>
         <button className='add-button' onClick={handleAddRoom}>Add</button>
         <button className='new-button' onClick={handleNewRoom}>New</button>
       </div>
-
-      {/* Display the list of rooms */}
       <div className="room-list">
         <ul>
           {rooms.map((room, index) => (

@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+# Software Studio 2023 Spring Midterm Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Scoring
 
-## Available Scripts
+| **Basic components**                             | **Score** | **Check** |
+| :----------------------------------------------- | :-------: | :-------: |
+| Membership Mechanism                             | 15%       | Y         |
+| Firebase page                                    | 5%        | Y         |
+| Database read/write                              | 15%       | Y         |
+| RWD                                              | 15%       | Y         |
+| Chatroom                                         | 20%       | Y         |
 
-In the project directory, you can run:
+| **Advanced tools**                               | **Score** | **Check** |
+| :----------------------------------------------- | :-------: | :-------: |
+| Using React                                      | 10%       | Y         |
+| Third-Party Sign In                              | 1%        | Y         |
+| Notification                                     | 5%        | Y         |
+| CSS Animation                                    | 2%        | N         |
+| Security                                         | 2%        | Y         |
 
-### `npm start`
+| **Other useful functions**                         | **Score** | **Check** |
+| :----------------------------------------------- | :-------: | :-------: |
+| Name of functions                                  | 1~5%     | N         |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+### How to setup your project
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-  Describe STEP by STEP (i.e. `cd Midterm`, `npm install` ...)
 
-### `npm run build`
+### How to use 
+1. Register
+   - 會在一開始自動導向Register Page
+     ![alt text](image.png)
+     分別打入Name, Email Address, Password就可以按Sign Up註冊．
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   - Sing up with Google 按下後會直接進入pop-up page，
+     ![alt text](<截圖 2024-05-02 晚上10.07.39.png>)
+     點進帳戶就可以使用Google帳號登入了
+   - Register完會自動登入不用在重新登入就會直接進去Chat的部分
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Login
+   - 可以點下方紅色方塊進到登入畫面，或是將路徑的最後從 /register 改成 /login
+    ![alt text](<截圖 2024-05-02 晚上10.11.43.png>)
+   - 進入登入頁面後，直接可以輸入Email, PassWord，或按下方的 Sing in with Google就可以登入，大致和Register步驟相同，登入完也會自動跳轉到Chat的畫面
+  ![alt text](<截圖 2024-05-02 晚上10.14.52.png>)
+   - 也可以按下方Register的連接回到Register Page或是直接更改網址結尾成 /register
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Home Page (ChatRoom)
+   - 一開始是在開始畫面呈現 "Choose a ChatRoom"，你需要選一個你所在的ChatRoom進入
+   ![alt text](image-1.png)
 
-### `npm run eject`
+### Function description
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Describe your bonus function and how to use it.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Firebase page link
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Your web page `URL`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Others (Optional)
 
-## Learn More
+- Anything you want to say to TAs.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<style>
+table th{
+    width: 100%;
+}
+</style>

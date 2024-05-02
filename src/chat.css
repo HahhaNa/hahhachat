@@ -187,6 +187,7 @@
   .message-list-container {
     max-height: calc(100% - 70px);
     overflow-y: auto; /* Add vertical scroll if content overflows */
+    overflow-x: auto;
     flex: 1;
   }
  
@@ -203,15 +204,11 @@
   .message-list-container h3 {
     position: sticky;
     top: 0;
+    padding: 10px 20px;
+    margin-bottom: 2px;
     background-color: #fff; /* Ensure the background color is visible */
     z-index: 1; /* Ensure it's above other content */
   }
-  
-  
-  
-
-
-
 
   /* Add these styles for room-buttons */
 .room-buttons {
@@ -268,3 +265,28 @@
   font-weight: bold;
 }
 
+.toggle-sidebar-btn img {
+  width: 12px;
+  height: 12px;
+}
+
+
+/* Add these media queries for smaller messages */
+@media screen and (max-width: 768px) {
+  .message {
+    font-size: 20px; /* Adjust font size for smaller messages */
+  }
+  
+  .message img {
+    max-width: 24px; /* Adjust image size for smaller messages */
+  }
+  
+  .message p {
+    font-size: 18px; /* Adjust font size for smaller messages */
+  }
+  
+  .message .time-right,
+  .message .time-left {
+    font-size: 10px; /* Adjust font size for smaller messages */
+  }
+}

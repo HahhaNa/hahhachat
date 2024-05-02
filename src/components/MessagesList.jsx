@@ -8,11 +8,11 @@ const MessageList = ({ messages, currentUser, currentRoom }) => {
     return <div className="message-list">Start to chat now !</div>;
   }
 
-  console.log("MESSAGES: ", messages);
+  console.log("currentRoom: ", currentRoom);
 
   return (
     <div className="message-list-container">
-      <h3>Message List</h3>
+      {currentRoom? <h3>{currentRoom}</h3>:<h3>Choose a ChatRoom</h3>}
       <div className="message-list"> 
         <ul>
           {messages.map((message, index) => (

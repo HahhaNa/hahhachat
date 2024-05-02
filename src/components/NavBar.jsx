@@ -3,7 +3,7 @@ import firebase from 'firebase/app';
 import { auth } from '../config'
 import { Link, useNavigate } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = (currentUser) => {
     const navigate = useNavigate();
     const handleLogout = () => {
         auth.signOut().then(() => {
@@ -21,7 +21,7 @@ const NavBar = () => {
             <span className='logo'>Hahha Chat</span>
             <div className='userinfo'>
                 <img src="https://icons.veryicon.com/png/o/transport/car-function-button/user-136.png" alt="pic" />
-                <p>Hanna</p>
+                <p>{currentUser.displayName}</p>
             </div>
             <button onClick={handleLogout}>LogOut</button>
         </div>

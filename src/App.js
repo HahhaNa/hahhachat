@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children, currentUser }) => {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate('/register');
+      navigate('register');
     }
   }, [currentUser, navigate]);
 
@@ -64,3 +64,4 @@ function App() {
 }
 
 export default App;
+

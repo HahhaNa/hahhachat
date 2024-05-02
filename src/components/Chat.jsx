@@ -5,6 +5,7 @@ import UserInput from './UserInput.jsx';
 
 const Chat = ({ currentUser, currentRoom }) => {
   const [messages, setMessages] = useState([]);
+  const [lastMessageText, setLastMessageText] = useState(null);
 
   useEffect(() => {
     const database = getDatabase();
@@ -18,6 +19,14 @@ const Chat = ({ currentUser, currentRoom }) => {
                 ...messagesData[messageId],
             }));
             setMessages(messagesArray);
+
+            // Check if the last message is not sent by the current user to avoid notifying for own messages
+            const lastMessage = messagesArray[messagesArray.length - 1];
+            if (lastMessage.senderId !== currentUser.uid && lastMessage.text !== lastMessageText) {
+                // Show notification
+                showNotification(lastMessage.text, currentRoom);
+                setLastMessageText(lastMessage.text); // Store the last message text to avoid continuous notifications for the same message
+            }
         } else {
             setMessages([]);
         }
@@ -26,8 +35,26 @@ const Chat = ({ currentUser, currentRoom }) => {
     return () => {
         off(roomMessagesRef, 'value', fetchData);
     };
-}, [currentRoom]);
+}, [currentRoom, currentUser, lastMessageText]);
 
+  // Function to show notification
+  const showNotification = (messageText, roomName) => {
+    if (Notification.permission === 'granted') {
+      new Notification('New Message', {
+        body: `From ${roomName}: ${messageText}`,
+        icon: 'path_to_your_icon.png'
+      });
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          new Notification('New Message', {
+            body: `From ${roomName}: ${messageText}`,
+            icon: 'path_to_your_icon.png'
+          });
+        }
+      });
+    }
+  };
 
   return (
     <div className='chat'>
