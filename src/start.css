@@ -9,7 +9,7 @@
 
 .formWrapper {
     background-color: #fffbcb;
-    padding: 20px 60px;
+    /* padding: 20px 40px; */
     border-radius: 10px;
     display: flex;
     flex-direction: column;
@@ -39,7 +39,7 @@
 }
 
 .formWrapper form input {
-    padding: 15px;
+    padding: 8px;
     border: none;
     width: 250px;
     border-bottom: 1px solid #a7bcff;
@@ -73,6 +73,81 @@
     margin: 10px;
     font-weight: 480;
   }
+
+
+/* RWD design */
+@media only screen and (max-width: 600px) {
+  .formContainer {
+    padding: 5vw;
+    display: flex;
+    justify-content: center;
+    /* overflow-y: auto;  */
+  }
+
+  .formWrapper {
+    width: 100%; /* Full width for smaller screens */
+    max-width: 300px; /* Limit max width for smaller screens */
+    padding: 10px; /* Adjust padding for smaller screens */
+    overflow-y: auto;
+  }
+
+  .formWrapper .logo {
+    font-size: 18px; /* Smaller font size for logo */
+  }
+
+  .formWrapper .title {
+    font-size: 20px; 
+  }
+
+  .formWrapper form {
+    overflow-y: auto; /* Add vertical scrollbar to formWrapper */
+  }
+
+  .formWrapper form input {
+    width: calc(100% - 30px); /* Adjust input width */
+    font-size: 14px; /* Smaller font size for input fields */
+  }
+
+  .formWrapper form button {
+    width: auto; /* Adjust button width */
+  }
+}
+
+/* For screens larger than 600px (e.g., laptops/desktops) */
+@media only screen and (min-width: 601px) {
+  .formContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto; /* Add scrollbar to formContainer */
+  }
+
+  .formWrapper {
+    width: auto; /* Auto width for larger screens */
+    max-width: 100%; /* Max width 100% */
+    padding: 20px 60px; /* Original padding for larger screens */
+    overflow: hidden; /* Hide overflow */
+  }
+
+  .formWrapper .logo {
+    font-size: 24px; /* Larger font size for logo */
+  }
+
+  .formWrapper .title {
+    font-size: 28px; /* Larger font size for title */
+  }
+
+  .formWrapper form input {
+    width: 250px; /* Original width for input fields */
+    font-size: 16px; /* Original font size for input fields */
+  }
+
+  .formWrapper form button {
+    width: auto; /* Original width for button */
+  }
+}
+
+
 
 /* Google Sign Up Button */
 .gsi-material-button {

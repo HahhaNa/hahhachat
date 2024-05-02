@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { database } from '../config.js';
 import { ref, push, set } from "firebase/database";
 
-const UserInput = ({ currentUser }) => {
+const UserInput = ({ currentUser, currentRoom }) => {
   const [inputText, setInputText] = useState('');
   const [error, setError] = useState(null);
 
@@ -10,40 +10,31 @@ const UserInput = ({ currentUser }) => {
     e.preventDefault();
     var time = new Date().getTime();
     if (inputText !== null) {
-      console.log(
-        currentUser.uid,
-        currentUser.displayName,
-        time,
-        inputText,
-      );
-      const messagesRef = ref(database, 'messages');
-      const newMessageRef = push(messagesRef, {
-        text: inputText,
-        timestamp: time,
-        senderId: currentUser.uid,
-        senderName: currentUser.displayName,
-      });
-      set(newMessageRef, {
-        text: inputText,
-        timestamp: time,
-        senderId: currentUser.uid,
-        senderName: currentUser.displayName,
-      },
-      setInputText('')
-      , error => {
-        if (error) {
-          setError(error.message);
-        } else {
-          setInputText('');
-        }
-      }
-      );
+        const messagesRef = ref(database, `rooms/${currentRoom}/messages`);
+        const newMessageRef = push(messagesRef, {
+            text: inputText,
+            timestamp: time,
+            senderId: currentUser.uid,
+            senderName: currentUser.displayName,
+        });
+        set(newMessageRef, {
+            text: inputText,
+            timestamp: time,
+            senderId: currentUser.uid,
+            senderName: currentUser.displayName,
+        }, error => {
+            if (error) {
+                setError(error.message);
+            } else {
+                setInputText('');
+            }
+        });
     }
   };
 
   return (
     <div className="input">
-      <form className="user-input">
+      <form className="user-input" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Type your message..."
@@ -51,12 +42,13 @@ const UserInput = ({ currentUser }) => {
           onChange={e => setInputText(e.target.value)}
         />
         <div className='send'>
-          <button type="submit" onClick={handleSubmit}>Send</button>  
+          <button type="submit">Send</button>  
         </div>
       </form>
       {error && <p>{error}</p>}
     </div>
   );
 };
+
 
 export default UserInput;

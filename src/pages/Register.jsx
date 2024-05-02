@@ -41,6 +41,7 @@ const Register = () => {
       );
       await updateProfile(userCredential.user, {
         displayName,
+        email,
       });
 
       // user on Realtime Database
@@ -61,12 +62,14 @@ const Register = () => {
   const handleGoogleRegister = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      // Check if additionalUserInfo exists and isNewUser is true
-      if (result.additionalUserInfo && result.additionalUserInfo.isNewUser && displayName) {
-        await result.user.updateProfile({
-          displayName: displayName
-        });
-      }
+      const displayName = result.user.displayName;
+      const email = result.user.email;
+
+      await updateProfile(result.user,{
+        displayName,
+        email,
+      });
+      
 
       // user on Realtime Database
       await set(ref(database, 'users/' + result.user.uid),{

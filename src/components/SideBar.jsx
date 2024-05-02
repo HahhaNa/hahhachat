@@ -6,8 +6,10 @@ import { ref, onValue, off, push, set, get } from 'firebase/database';
 
 const SideBar = ({ currentUser, onRoomChange }) => {
   const [rooms, setRooms] = useState([]);
+  const [selectedRoom, setSelectedRoom] = useState(null);
 
   const handleRoomClick = (room) => {
+    setSelectedRoom(room); 
     onRoomChange(room);
   };
 
@@ -15,14 +17,35 @@ const SideBar = ({ currentUser, onRoomChange }) => {
     const roomsRef = ref(database, 'rooms');
     const unsubscribe = onValue(roomsRef, (snapshot) => {
       const data = snapshot.val();
+      console.log("data: ", data);
+      console.log("Check Current User Email: ", currentUser.email);
       if (data) {
         const roomList = [];
         for (const roomId in data) {
           const room = data[roomId];
-          if (room.userEmail && (Array.isArray(room.userEmail) ? room.userEmail.includes(currentUser.email) : room.userEmail === currentUser.email)) {
-            roomList.push(room.roomName);
+          if (room.userEmail) {
+            let emailExists = false;
+            if (Array.isArray(room.userEmail)) {
+              // If userEmail is an array, check if currentUser.email exists in it
+              for (const email of room.userEmail) {
+                if (email === currentUser.email) {
+                  emailExists = true;
+                  break;
+                } 
+              }
+            } else {
+              // If userEmail is not an array, directly compare with currentUser.email
+              emailExists = room.userEmail === currentUser.email;
+            }
+            
+            if (emailExists) {
+              roomList.push(room.roomName);
+            } else {
+              console.log("Not pushed Room: ", room);
+            }
           }
         }
+        
         setRooms(roomList);
       }
     });
@@ -56,7 +79,7 @@ const SideBar = ({ currentUser, onRoomChange }) => {
           await set(ref(database, `rooms/${roomToUpdate.roomId}/userEmail`), updatedUserEmails);
           console.log('Successfully subscribed', otherUserEmail, 'to room:', roomName);
         } else {
-          console.log('Room not found or you are not authorized:', roomName);
+          console.log('Room not found or you are not authorized:', roomName, ", roomToUpdate: ", roomToUpdate);
         }
       } catch (error) {
         console.log('Error subscribing user to room:', error);
@@ -69,12 +92,13 @@ const SideBar = ({ currentUser, onRoomChange }) => {
     const newRoomName = prompt('Enter the new room name:');
     if (newRoomName) {
       // Write the new room data to the database
-      const newRoomRef = push(ref(database, 'rooms'));
+      const newRoomRef = push(ref(database, `rooms`));
       set(newRoomRef, {
         roomId: newRoomRef.key, // Assign a unique ID for the room
         roomName: newRoomName,
         userId: currentUser.uid,
         userEmail: currentUser.email, // Store userEmail without nesting
+        messages: [],
       });
 
       // Update state with the new room
@@ -87,7 +111,6 @@ const SideBar = ({ currentUser, onRoomChange }) => {
   return (
     <div className="sidebar">
       <NavBar />
-      <Search />
 
       <div className='room-buttons'>
         <button className='add-button' onClick={handleAddRoom}>Add</button>
@@ -96,12 +119,17 @@ const SideBar = ({ currentUser, onRoomChange }) => {
 
       {/* Display the list of rooms */}
       <div className="room-list">
-          <h3>Topics</h3>
-          <ul>
-              {rooms.map((room, index) => (
-                  <li key={index} onClick={() => handleRoomClick(room)}>{room}</li>
-              ))}
-          </ul>
+        <ul>
+          {rooms.map((room, index) => (
+            <li 
+              key={index} 
+              onClick={() => handleRoomClick(room)}
+              className={selectedRoom === room ? 'selected-room' : 'unselected-room'}
+            >
+              {room}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
